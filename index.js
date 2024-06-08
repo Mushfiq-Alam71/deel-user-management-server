@@ -23,7 +23,9 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const userCollection = client.db("EmployeeDB").collection("users");
+    const worksheetCollection = client.db("EmployeeDB").collection("worksheet");
 
+    // employee info saving to database
     app.post("/users", async (req, res) => {
       const userInfo = req.body;
       console.log(userInfo);
@@ -31,11 +33,29 @@ async function run() {
       res.send(result);
     });
 
+    // taking saved employee info to client side from database
     app.get("/users", async (req, res) => {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
 
+    // worksheet info saving to database
+    app.post("/worksheet", async (req, res) => {
+      const workInfo = req.body;
+      console.log(workInfo);
+      const result = await worksheetCollection.insertOne(workInfo);
+      res.send(result);
+    });
+    // taking saved worksheet info to client side from database
+    app.get("/worksheet", async (req, res) => {
+      const result = await worksheetCollection.find().toArray();
+      res.send(result);
+    });
+
+    // ................
+    // ................
+    // ................
+    // pinged info to check connection
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
