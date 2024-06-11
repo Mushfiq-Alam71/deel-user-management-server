@@ -38,6 +38,8 @@ async function run() {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
+
+    // taking saved single employee info to client side from database
     app.get("/users/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
