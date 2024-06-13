@@ -24,6 +24,7 @@ async function run() {
   try {
     const userCollection = client.db("EmployeeDB").collection("users");
     const worksheetCollection = client.db("EmployeeDB").collection("worksheet");
+    const paymentCollection = client.db("EmployeeDB").collection("payment");
 
     // employee info saving to database
     app.post("/users", async (req, res) => {
@@ -57,6 +58,14 @@ async function run() {
     // taking saved worksheet info to client side from database
     app.get("/worksheet", async (req, res) => {
       const result = await worksheetCollection.find().toArray();
+      res.send(result);
+    });
+
+    // payment to employee info saving to database
+    app.post("/payment", async (req, res) => {
+      const paymentInfo = req.body;
+      console.log(paymentInfo);
+      const result = await paymentCollection.insertOne(paymentInfo);
       res.send(result);
     });
 
