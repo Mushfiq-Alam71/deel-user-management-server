@@ -64,7 +64,7 @@ async function run() {
     // employee info saving to database
     app.post("/users", verifyToken, verifyAdmin, async (req, res) => {
       const userInfo = req.body;
-      console.log(userInfo);
+      // console.log(userInfo);
       const result = await userCollection.insertOne(userInfo);
       res.send(result);
     });
@@ -77,7 +77,7 @@ async function run() {
 
     app.get("/user/admin/:email", verifyToken, async (req, res) => {
       const email = req.params.email;
-      console.log(req.decoded.email);
+      // console.log(req.decoded.email);
       if (email !== req.decoded.email) {
         return res.status(403).send({ message: "forbidden access" });
       }
@@ -101,7 +101,7 @@ async function run() {
     // worksheet info saving to database
     app.post("/worksheet", async (req, res) => {
       const workInfo = req.body;
-      console.log(workInfo);
+      // console.log(workInfo);
       const result = await worksheetCollection.insertOne(workInfo);
       res.send(result);
     });
@@ -114,7 +114,7 @@ async function run() {
     // payment to employee info saving to database
     app.post("/payment", async (req, res) => {
       const paymentInfo = req.body;
-      console.log(paymentInfo);
+      // console.log(paymentInfo);
       const result = await paymentCollection.insertOne(paymentInfo);
       res.send(result);
     });
