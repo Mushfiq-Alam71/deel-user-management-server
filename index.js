@@ -62,7 +62,7 @@ async function run() {
     };
 
     // employee info saving to database
-    app.post("/users", verifyToken, verifyAdmin, async (req, res) => {
+    app.post("/users", async (req, res) => {
       const userInfo = req.body;
       // console.log(userInfo);
       const result = await userCollection.insertOne(userInfo);
