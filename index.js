@@ -70,7 +70,7 @@ async function run() {
     });
 
     // taking saved employee info to client side from database
-    app.get("/users", verifyToken, async (req, res) => {
+    app.get("/users", async (req, res) => {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
@@ -119,6 +119,13 @@ async function run() {
       res.send(result);
     });
 
+    // taking saved payment info to client side from database
+    app.get("/payment", async (req, res) => {
+      const result = await paymentCollection.find().toArray();
+      res.send(result);
+    });
+
+    // make admin (update)
     app.patch(
       "/users/admin/:id",
       verifyToken,
@@ -131,11 +138,25 @@ async function run() {
             role: "admin",
           },
         };
-
         const result = await userCollection.updateOne(filter, updatedDoc);
         res.send(result);
       }
     );
+
+    // verified (update)
+    app.patch("/users/:id", async (req, res) => {
+      const user_id = req.params.id;
+      const user = req.body;
+      const filter = { _id: new ObjectId(user_id) };
+      const options = { upsert: true };
+      const updatedUser = { $set: user };
+      const result = await userCollection.updateOne(
+        filter,
+        updatedUser,
+        options
+      );
+      res.send(result);
+    });
     // ................
     // ................
     // ................
