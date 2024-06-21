@@ -74,7 +74,7 @@ async function run() {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
-
+    // admin role check
     app.get("/user/admin/:email", verifyToken, async (req, res) => {
       const email = req.params.email;
       // console.log(req.decoded.email);
@@ -88,6 +88,21 @@ async function run() {
         admin = user?.role === "admin";
       }
       res.send({ admin });
+    });
+    // hr role check
+    app.get("/user/hr/:email", verifyToken, async (req, res) => {
+      const email = req.params.email;
+      // console.log(req.decoded.email);
+      if (email !== req.decoded.email) {
+        return res.status(403).send({ message: "forbidden access" });
+      }
+      const query = { email: email };
+      const user = await userCollection.findOne(query);
+      let hr = false;
+      if (user) {
+        hr = user?.role === "hr";
+      }
+      res.send({ hr });
     });
 
     // taking saved single employee info to client side from database
@@ -127,15 +142,17 @@ async function run() {
 
     // make admin (update)
     app.patch(
-      "/users/admin/:id",
+      "/users/role/:id/:role",
       verifyToken,
-      verifyAdmin,
+
       async (req, res) => {
         const id = req.params.id;
+        const role = req.params.role;
         const filter = { _id: new ObjectId(id) };
+        console.log(filter);
         const updatedDoc = {
           $set: {
-            role: "admin",
+            role: role,
           },
         };
         const result = await userCollection.updateOne(filter, updatedDoc);
