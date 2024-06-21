@@ -141,24 +141,19 @@ async function run() {
     });
 
     // make admin (update)
-    app.patch(
-      "/users/role/:id/:role",
-      verifyToken,
-
-      async (req, res) => {
-        const id = req.params.id;
-        const role = req.params.role;
-        const filter = { _id: new ObjectId(id) };
-        console.log(filter);
-        const updatedDoc = {
-          $set: {
-            role: role,
-          },
-        };
-        const result = await userCollection.updateOne(filter, updatedDoc);
-        res.send(result);
-      }
-    );
+    app.patch("/users/role/:id/:role", verifyToken, async (req, res) => {
+      const id = req.params.id;
+      const role = req.params.role;
+      const filter = { _id: new ObjectId(id) };
+      console.log(filter);
+      const updatedDoc = {
+        $set: {
+          role: role,
+        },
+      };
+      const result = await userCollection.updateOne(filter, updatedDoc);
+      res.send(result);
+    });
 
     // verified (update)
     app.patch("/users/:id", async (req, res) => {
