@@ -140,7 +140,7 @@ async function run() {
       res.send(result);
     });
 
-    // make admin (update)
+    // make admin, hr, employee role (update)
     app.patch("/users/role/:id/:role", verifyToken, async (req, res) => {
       const id = req.params.id;
       const role = req.params.role;
@@ -167,6 +167,15 @@ async function run() {
         updatedUser,
         options
       );
+      res.send(result);
+    });
+
+    // delete user from admin dashboard
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
       res.send(result);
     });
     // ................
