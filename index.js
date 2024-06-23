@@ -140,6 +140,12 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/payment/:name", async (req, res) => {
+      const filter = { employee_name: req.params.name };
+      const result = await paymentCollection.find(filter).toArray();
+      res.send(result);
+    });
+
     // make admin, hr, employee role (update)
     app.patch("/users/role/:id/:role", verifyToken, async (req, res) => {
       const id = req.params.id;
